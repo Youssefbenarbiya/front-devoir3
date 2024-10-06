@@ -1,0 +1,24 @@
+<div class="container">
+    <form class="form-inline"> <div class="form-group mx-sm-3 mb-2 mt-2 "> 
+        <label>Nom Equipe en tapant</label> 
+        <input #nom [(ngModel)]="searchTerm" name="searchTerm" class="form-control" >
+     </div>
+     </form>
+    <div class="card shadow mb-4">
+    <div class="card-body">
+    <table class="table table-striped">
+    <tr> <th>Id</th><th>Nom</th> <th>Rank</th> <th>Date Création</th><th>Ligue</th> <th>Supprimer</th><th>Editer</th></tr>
+    <tbody *ngFor="let Equipe of equipes | searchFilter: searchTerm ">    <tr >
+    <td>{{Equipe.idEquipe}}</td>
+    <td>{{Equipe.nomEquipe}}</td>
+    <td>{{Equipe.rankEquipe}}</td>
+    <td>{{Equipe.dateCreation | date:'dd/MM/yyyy'}}</td>
+    <td>{{Equipe.ligue.nomLigue}}</td>
+    <td><a class="btn btn-danger" (click)="supprimerEquipe(Equipe)">Supprimer</a></td>
+    <td><a class="btn btn-success" [routerLink]="['/updateEquipe',Equipe.idEquipe]">Modifier</a></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
