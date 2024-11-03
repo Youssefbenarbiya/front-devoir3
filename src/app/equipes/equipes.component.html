@@ -11,13 +11,13 @@
     <td>{{Equipe.dateCreation | date:'dd/MM/yyyy'}}</td>
     <td>{{Equipe.ligue.nomLigue}}</td>
     <td>
-        <img
-          class="card-img-top img-responsive"
-          *ngIf="Equipe.imageStr"
-          src="{{apiURL+'/image/loadfromFS/'+Equipe.idEquipe}}"  
-         style="height: 50px; width: 100px"
-        />
-        <span *ngIf="!Equipe.imageStr">No Image</span> <!-- Or provide a fallback -->
+      <img
+      class="card-img-top img-responsive"
+      *ngIf="Equipe.imageStr"
+      [src]="Equipe.imageStr"
+      style="height: 50px; width: 100px"
+    />
+    <span *ngIf="!Equipe.imageStr">No Image</span>
       </td>
       
          <td><a *ngIf="authService.isAdmin()" class="btn btn-danger" (click)="supprimerEquipe(Equipe)">Supprimer</a></td>

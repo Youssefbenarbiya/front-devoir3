@@ -114,38 +114,65 @@ export class EquipeService {
     return this.http.put<Ligue>(url, lig, { headers: httpHeaders });
   }
 
+
+
+
+
   uploadImage(file: File, filename: string): Observable<Image> {
     const imageFormData = new FormData();
     imageFormData.append('image', file, filename);
+  
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    const httpHeaders = new HttpHeaders({ 
+      'Authorization': jwt 
+    });
+  
     const url = `${this.apiURL + '/image/upload'}`;
-    return this.http.post<Image>(url, imageFormData);
+    return this.http.post<Image>(url, imageFormData, { headers: httpHeaders });
   }
+  
 
-  loadImage(id: number): Observable<Image> {
-    const url = `${this.apiURL + '/image/get/info'}/${id}`;
-    return this.http.get<Image>(url);
-  }
 
-  uploadImageEqip(
-    file: File,
-    filename: string,
-    idEqip: number
-  ): Observable<any> {
-    const imageFormData = new FormData();
-    imageFormData.append('image', file, filename);
-    const url = `${this.apiURL + '/image/uploadImageEqip'}/${idEqip}`;
+loadImage(id: number): Observable<Image> {
+  let jwt = this.authService.getToken();
+  jwt = 'Bearer ' + jwt;
+  const httpHeaders = new HttpHeaders({ 
+    'Authorization': jwt 
+  });
 
-    return this.http.post(url, imageFormData);
-  }
-  supprimerImage(id: number) {
-    const url = `${this.apiURL}/image/delete/${id}`;
-    return this.http.delete(url, httpOptions);
-  }
+  const url = `${this.apiURL + '/image/get/info'}/${id}`;
+  return this.http.get<Image>(url, { headers: httpHeaders });
+}
 
-  uploadImageFS(file: File, filename: string, idProd: number): Observable<any> {
-    const imageFormData = new FormData();
-    imageFormData.append('image', file, filename);
-    const url = `${this.apiURL + '/image/uploadFS'}/${idProd}`;
-    return this.http.post(url, imageFormData);
-  }
+uploadImageEqip(
+  file: File,
+  filename: string,
+  idEqip: number
+): Observable<any> {
+  let jwt = this.authService.getToken();
+  jwt = 'Bearer ' + jwt;
+  const httpHeaders = new HttpHeaders({ 
+    'Authorization': jwt 
+  });
+
+  const imageFormData = new FormData();
+  imageFormData.append('image', file, filename);
+  const url = `${this.apiURL + '/image/uploadImageEqip'}/${idEqip}`;
+  return this.http.post(url, imageFormData, { headers: httpHeaders });
+}
+
+
+supprimerImage(id: number): Observable<void> {
+  let jwt = this.authService.getToken();
+  jwt = 'Bearer ' + jwt;
+  const httpHeaders = new HttpHeaders({ 
+    'Authorization': jwt 
+  });
+
+  const url = `${this.apiURL}/image/delete/${id}`;
+  return this.http.delete<void>(url, { headers: httpHeaders });
+}
+
+
 }

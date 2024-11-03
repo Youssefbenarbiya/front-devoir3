@@ -1,40 +1,43 @@
 <div class="container">
     <div>
-        <h2>Ajouter un Equipe :</h2>
+      <h2>Ajouter un Equipe :</h2>
     </div>
-    <form>
-        <div hidden class="col-sm-2 col-md-2 col-lg-2">
-            <label>ID Equipe</label>
-            <input type="text" [(ngModel)]="newEquipe.idEquipe" name="idEquipe" class="form-control">
+    <form (ngSubmit)="addEquipe()">
+      <div hidden class="col-sm-2 col-md-2 col-lg-2">
+        <label>ID Equipe</label>
+        <input type="text" [(ngModel)]="newEquipe.idEquipe" name="idEquipe" class="form-control">
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Nom Equipe</label>
+        <input type="text" [(ngModel)]="newEquipe.nomEquipe" name="nomEquipe" class="form-control">
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label>Rank Equipe</label>
+        <input type="number" [(ngModel)]="newEquipe.rankEquipe" name="prixEquipe" class="form-control">
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Date création</label>
+        <input type="date" [(ngModel)]="newEquipe.dateCreation" name="dateCreation" class="form-control">
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Ligue</label>
+        <select class="form-control form-control-lg" id="idLigue" name="idLigue" [(ngModel)]="newIdLigue">
+          <option *ngFor="let lig of ligues" [value]="lig.idLigue">
+            {{lig.nomLigue}}
+          </option>
+        </select>
+      </div>
+      <div class="mt-2">
+        <div class="col-sm-16 col-md-16 col-lg-16">
+          <label class="mb-2">Image :</label>
+          <input type="file" (change)="onImageUpload($event)" name="logo" class="form-control">
         </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Nom Equipe</label>
-            <input type="text" [(ngModel)]="newEquipe.nomEquipe" name="nomEquipe" class="form-control">
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <label>Rank Equipe</label>
-            <input type="number" [(ngModel)]="newEquipe.rankEquipe" name="prixEquipe" class="form-control">
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Date création</label>
-            <input type="date" [(ngModel)]="newEquipe.dateCreation" name="dateCreation" class="form-control">
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Ligue</label>
-            <select class="form-control form-control-lg" id="idLigue" name="idLigue" [(ngModel)]="newIdLigue">
-                <option *ngFor="let lig of ligues" [value]="lig.idLigue">
-                    {{lig.nomLigue}}
-                </option>
-            </select> 
-        </div>
-            <div class="mt-2">
-                <div class="col-sm-16 col-md-16 col-lg-16"> <label class="mb-2">Image :</label> <input type="file"
-                        (change)="onImageUpload($event)" name="logo" class="form-control"> </div>
-            </div>
-            <div class="col-sm-16 col-md-16 col-lg-16"> <img [src]="imagePath"
-                    class="card-img-top img-fluid rounded-start" style="width: 500px; height: 300px" /> </div>
-            <button type="submit" (click)="addEquipe()" class="btn btn-success">Ajouter</button>
-      
-        <h2 *ngIf="ajouterAvecSucces">Ajouter avec succès</h2>
+      </div>
+      <div class="col-sm-16 col-md-16 col-lg-16">
+        <img [src]="imagePath" class="card-img-top img-fluid rounded-start" style="width: 500px; height: 300px">
+      </div>
+      <button type="submit" class="btn btn-success">Ajouter</button>
+      <h2 *ngIf="ajouterAvecSucces">Ajouter avec succès</h2>
     </form>
-</div>
+  </div>
+  

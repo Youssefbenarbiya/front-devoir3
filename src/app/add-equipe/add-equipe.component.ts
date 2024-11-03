@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Equipe } from '../model/equipe.model';
 import { EquipeService } from '../services/equipe.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Ligue } from '../model/ligue.model';
 import { Image } from '../model/image.model';
+
 @Component({
   selector: 'app-add-equipe',
   templateUrl: './add-equipe.component.html',
 })
-export class AddEquipeComponent {
+export class AddEquipeComponent implements OnInit {
   ligues!: Ligue[];
   newIdLigue!: number;
   newLigue!: Ligue;
@@ -23,54 +24,57 @@ export class AddEquipeComponent {
   ngOnInit(): void {
     this.equipeService.listeLigues().subscribe((ligs) => {
       this.ligues = ligs._embedded.ligues;
-      console.log(ligs);
+      console.log('Loaded Ligues: ', this.ligues);
     });
   }
+
   onImageUpload(event: any) {
     this.uploadedImage = event.target.files[0];
-    var reader = new FileReader();
+    console.log('Selected Image: ', this.uploadedImage);
+    const reader = new FileReader();
     reader.readAsDataURL(this.uploadedImage);
     reader.onload = (_event) => {
       this.imagePath = reader.result;
     };
   }
-  /*
   addEquipe() {
-    this.equipeService
-      .uploadImage(this.uploadedImage, this.uploadedImage.name)
-      .subscribe((img: Image) => {
-      this.newEquipe.image = img;
-      this.newEquipe.ligue = this.ligues.find(
-        (lig) => lig.idLigue == this.newIdLigue
-      )!;
-      this.equipeService.ajouterEquipe(this.newEquipe).subscribe(() => {
-        this.router.navigate(['equipes']);
-      });
-      });
-  }*/
-      addEquipe() {
-    this.newEquipe.ligue = this.ligues.find(
-      (lig) => lig.idLigue == this.newIdLigue
-    )!;
-    this.equipeService.ajouterEquipe(this.newEquipe).subscribe((prod) => {
-      this.equipeService
-        .uploadImageFS(
-          this.uploadedImage,
-          this.uploadedImage.name,
-          prod.idEquipe
-        )
-        .subscribe((response: any) => {});
-      this.router.navigate(['equipes']);
-    });
+    console.log('Starting addEquipe process...');
+    console.log('Selected Ligue ID: ', this.newIdLigue);
+    console.log('Available Ligues: ', this.ligues);
+  
+    const selectedLigue = this.ligues.find((lig) => lig.idLigue == this.newIdLigue);
+    if (!selectedLigue) {
+      console.error('Ligue not found for ID: ', this.newIdLigue);
+      return;
+    }
+  
+    this.newEquipe.ligue = selectedLigue;
+    console.log('New Equipe before saving: ', this.newEquipe);
+  
+    // First, save the Equipe
+    this.equipeService.ajouterEquipe(this.newEquipe).subscribe(
+      (savedEquipe) => {
+        console.log('Equipe saved successfully: ', savedEquipe);
+  
+        // Now upload the image using the saved Equipe ID
+        this.equipeService.uploadImageEqip(this.uploadedImage, this.uploadedImage.name, savedEquipe.idEquipe).subscribe(
+          (img: Image) => {
+            console.log('Uploaded Image: ', img);
+  
+            // Update the Equipe with the image
+            this.newEquipe.images = [img];
+            this.router.navigate(['equipes']);
+          },
+          (error) => {
+            console.error('Error uploading image: ', error);
+          }
+        );
+      },
+      (error) => {
+        console.error('Error saving Equipe: ', error);
+      }
+    );
   }
-  /*
-  addEquipe() {
-    this.newEquipe.ligue = this.ligues.find(
-      (lig) => lig.idLigue == this.newIdLigue
-    )!;
-    this.equipeService.ajouterEquipe(this.newEquipe).subscribe((eqip) => {
-      console.log(eqip);
-      this.router.navigate(['equipes']);
-    });
-  } */
+  
+  
 }

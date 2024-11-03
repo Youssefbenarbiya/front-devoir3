@@ -27,7 +27,7 @@ constructor(private formBuilder: FormBuilder,  private authService : AuthService
 ngOnInit(): void {
   this.myForm = this.formBuilder.group({
 
-  username : ['', [Validators.required]],
+  username : ['', [Validators.required, Validators.minLength(2)]],
   email : ['', [Validators.required, Validators.email]],
   password : ['', [Validators.required, Validators.minLength(6)]],
   confirmPassword : ['', [Validators.required]]
